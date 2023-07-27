@@ -10,7 +10,7 @@ class Snake(tk.Canvas):
     def __init__(self):
         super().__init__(width=GRID_WIDTH * GRID_SIZE, 
                          height=GRID_HEIGHT * GRID_SIZE)
-        self.snake_positions = [(14, 7), (15, 7), (16, 7)] 
+        self.snake_positions = [(14, 7), (15, 7), (16, 7)]
         self.food_position = self.generate_food()
         self.direction = 'Right'
         self.snake_length = 3
@@ -28,7 +28,7 @@ class Snake(tk.Canvas):
             y = random.randint(0, GRID_HEIGHT - 1)
             if (x, y) not in self.snake_positions:
                 return (x, y)
-
+                
     def create_objects(self):
         self.delete(tk.ALL)
         
@@ -45,10 +45,12 @@ class Snake(tk.Canvas):
                          
     def check_collisions(self):
         head = self.snake_positions[0]
-        body = set(self.snake_positions[1:])
-        if head in body:
-            self.game_over()
+        body = self.snake_positions[1:]
         
+        for segment in body:
+            if head == segment:
+                self.game_over()
+                
         if (head[0] < 0 or head[0] >= GRID_WIDTH or
             head[1] < 0 or head[1] >= GRID_HEIGHT):
             self.game_over()
