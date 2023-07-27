@@ -64,6 +64,8 @@ gui.game_loop()
 # Create the Snake GUI instance 
 snake = Snake() 
 
+snake.pack()
+
 # Enter the Tkinter event loop 
 snake.mainloop()
 
