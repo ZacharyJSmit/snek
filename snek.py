@@ -11,7 +11,8 @@ class Snake(tk.Canvas):
     def __init__(self):
         super().__init__(width=GRID_WIDTH*GRID_SIZE, height=GRID_HEIGHT*GRID_SIZE)
         self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)] 
-        self.food_position = self.set_new_food_position()
+
+        
         self.direction = 'Right'
 
         self.create_objects()
