@@ -11,7 +11,13 @@ class Snake(tk.Canvas):
     def __init__(self):
         super().__init__(width=GRID_WIDTH*GRID_SIZE, height=GRID_HEIGHT*GRID_SIZE)
         self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)] 
-
+def set_new_food_position(self):
+    while True:
+        x = random.randint(0, GRID_WIDTH - 1)
+        y = random.randint(0, GRID_HEIGHT - 1)
+        food = (x, y)
+        if food not in self.snake_positions:
+            return food
         
         
         self.direction = 'Right'
