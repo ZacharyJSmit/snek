@@ -1,78 +1,54 @@
-import pygame
+import tkinter as tk
 import random
-import sys
 
-# Constants
-SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 600
+# Constants 
 GRID_SIZE = 20
-GRID_WIDTH = SCREEN_WIDTH / GRID_SIZE
-GRID_HEIGHT = SCREEN_HEIGHT / GRID_SIZE
+GRID_WIDTH = 30
+GRID_HEIGHT = 30
 
-UP = (0, -1)
-DOWN = (0, 1)
-LEFT = (-1, 0)
-RIGHT = (1, 0) 
-
-# Snake class
-class Snake:
+class Snake(tk.Canvas):
 
     def __init__(self):
-        self.length = 1
-        self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
-        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+        super().__init__(width=GRID_WIDTH*GRID_SIZE, height=GRID_HEIGHT*GRID_SIZE)
+        self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)] 
+        self.food_position = self.set_new_food_position()
+        self.direction = 'Right'
 
-    def draw(self, surface):
-        for p in self.positions:
-            r = pygame.Rect((p[0], p[1]), (GRID_SIZE, GRID_SIZE))
-            pygame.draw.rect(surface, (255,255,255), r)
+        self.create_objects()
+        self.bind_all('<Key>', self.on_key_press)
 
-    def move(self):
-        cur = self.positions[0]
-        x, y = self.direction
-        new = (((cur[0]+(x*GRID_SIZE)) % SCREEN_WIDTH), (cur[1]+(y*GRID_SIZE)) % SCREEN_HEIGHT)
-        if len(self.positions) > 2 and new in self.positions[2:]:
-            self.reset()
-        else:
-            self.positions.insert(0, new)
-            if len(self.positions) > self.length:
-                self.positions.pop()
+        self.pack()
 
-    def reset(self):
-        self.length = 1
-        self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
-        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+    def create_objects(self):
+        self.create_rectangle(*self.snake_positions[0], *self.snake_positions[0], fill='red') 
+        self.create_oval(*self.food_position, *self.food_position, fill='green')
 
-    def handle_keys(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    self.direction = UP
-                elif event.key == pygame.K_DOWN:
-                    self.direction = DOWN
-                elif event.key == pygame.K_LEFT:
-                    self.direction = LEFT 
-                elif event.key == pygame.K_RIGHT:
-                    self.direction = RIGHT
+    def move_snake(self):
+        head_x, head_y = self.snake_positions[0]
 
-# Game loop
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption('Snake')
-    clock = pygame.time.Clock()
+        if self.direction == 'Right':
+            new_head = (head_x + 1, head_y)
+        elif self.direction == 'Left':
+            new_head = (head_x - 1, head_y)
+        elif self.direction == 'Down':
+            new_head = (head_x, head_y + 1)
+        elif self.direction == 'Up':
+            new_head = (head_x, head_y - 1)
 
-    snake = Snake()
+        self.snake_positions.insert(0, new_head)
 
-    while True:
-        clock.tick(10)
-        snake.handle_keys()
-        screen.fill((0,0,0))
-        snake.move()
-        snake.draw(screen)
-        pygame.display.flip()
+    def on_key_press(self, e):
+        new_direction = e.keysym
+        all_directions = ('Up', 'Down', 'Left', 'Right')
+        opposites = ({'Up', 'Down'}, {'Left', 'Right'})
 
-main()
+        if (new_direction in all_directions and 
+            {new_direction, self.direction} not in opposites):
+            self.direction = new_direction
+
+    def game_loop(self):
+        # TODO: Add game logic
+        pass
+
+gui = Snake()
+gui.game_loop()
