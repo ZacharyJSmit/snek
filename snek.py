@@ -66,3 +66,9 @@ snake = Snake()
 
 # Enter the Tkinter event loop 
 snake.mainloop()
+
+def start_game(self):
+    self.after(100, self.game_loop)
+
+# In __init__...
+self.start_game()
