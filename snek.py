@@ -1,7 +1,7 @@
 import tkinter as tk
 import random
 
-# Constants 
+# Constants
 GRID_SIZE = 20
 GRID_WIDTH = 30
 GRID_HEIGHT = 30
@@ -9,27 +9,31 @@ GRID_HEIGHT = 30
 class Snake(tk.Canvas):
 
     def __init__(self):
-        super().__init__(width=GRID_WIDTH*GRID_SIZE, height=GRID_HEIGHT*GRID_SIZE)
-        self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)] 
-    def set_new_food_position(self):
-        while True:
-            x = random.randint(0, GRID_WIDTH - 1)
-            y = random.randint(0, GRID_HEIGHT - 1)
-            food = (x, y)
-            if food not in self.snake_positions:
-                return food
-        
-        
+        super().__init__(width=GRID_WIDTH * GRID_SIZE, 
+                         height=GRID_HEIGHT * GRID_SIZE)
+        self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)]
+        self.food_position = self.set_new_food_position()
         self.direction = 'Right'
 
         self.create_objects()
         self.bind_all('<Key>', self.on_key_press)
 
         self.pack()
+        self.start_game()
+
+    def set_new_food_position(self):
+        while True:
+            x = random.randint(0, GRID_WIDTH - 1)
+            y = random.randint(0, GRID_HEIGHT - 1)
+            food_pos = (x, y)
+            if food_pos not in self.snake_positions:
+                return food_pos
 
     def create_objects(self):
-        self.create_rectangle(*self.snake_positions[0], *self.snake_positions[0], fill='red') 
-        self.create_oval(*self.food_position, *self.food_position, fill='green')
+        self.create_rectangle(*self.snake_positions[0], 
+                              *self.snake_positions[0], fill='red')
+        self.create_oval(*self.food_position, *self.food_position, 
+                         fill='green')
 
     def move_snake(self):
         head_x, head_y = self.snake_positions[0]
@@ -55,22 +59,14 @@ class Snake(tk.Canvas):
             self.direction = new_direction
 
     def game_loop(self):
-        # TODO: Add game logic
-        pass
+        self.move_snake()
+        # Add collision checking
+        
+        self.after(100, self.game_loop)
 
-gui = Snake()
-gui.game_loop()
+    def start_game(self):
+        self.after(100, self.game_loop)
+        self.mainloop()
 
-# Create the Snake GUI instance 
-snake = Snake() 
-
-snake.pack()
-
-# Enter the Tkinter event loop 
-snake.mainloop()
-
-def start_game(self):
-    self.after(100, self.game_loop)
-
-# In __init__...
-self.start_game()
+# Create GUI
+snake = Snake()
