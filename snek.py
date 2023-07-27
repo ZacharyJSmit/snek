@@ -2,7 +2,7 @@ import tkinter as tk
 import random
 
 GRID_SIZE = 20
-GRID_WIDTH = 30  
+GRID_WIDTH = 30
 GRID_HEIGHT = 30
 
 class Snake(tk.Canvas):
@@ -10,7 +10,7 @@ class Snake(tk.Canvas):
     def __init__(self):
         super().__init__(width=GRID_WIDTH * GRID_SIZE, 
                          height=GRID_HEIGHT * GRID_SIZE)
-        self.snake_positions = [(14, 7), (15, 7), (16, 7)]
+        self.snake_positions = [(14, 7), (15, 7), (16, 7)] 
         self.food_position = self.generate_food()
         self.direction = 'Right'
         self.snake_length = 3
@@ -45,8 +45,7 @@ class Snake(tk.Canvas):
                          
     def check_collisions(self):
         head = self.snake_positions[0]
-        
-        body = self.snake_positions[1:]
+        body = set(self.snake_positions[1:])
         if head in body:
             self.game_over()
         
