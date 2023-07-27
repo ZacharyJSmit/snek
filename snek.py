@@ -1,4 +1,4 @@
-import tkinter as tk
+import tkinter as tk 
 import random
 
 GRID_SIZE = 20
@@ -10,9 +10,10 @@ class Snake(tk.Canvas):
     def __init__(self):
         super().__init__(width=GRID_WIDTH * GRID_SIZE, 
                          height=GRID_HEIGHT * GRID_SIZE)
-        self.snake_positions = [(14, 7), (15, 7)]
-        self.food_position = self.set_new_food_position()
+        self.snake_positions = [(14, 7), (15, 7), (16, 7)]
+        self.food_position = self.generate_food()
         self.direction = 'Right'
+        self.snake_length = 3
         self.score = 0
 
         self.create_objects()
@@ -21,13 +22,13 @@ class Snake(tk.Canvas):
         self.pack()
         self.after_id = self.after(100, self.game_loop)
 
-    def set_new_food_position(self):
+    def generate_food(self):
         while True:
             x = random.randint(0, GRID_WIDTH - 1)
             y = random.randint(0, GRID_HEIGHT - 1)
             if (x, y) not in self.snake_positions:
                 return (x, y)
-
+                
     def create_objects(self):
         self.delete(tk.ALL)
         
@@ -49,14 +50,14 @@ class Snake(tk.Canvas):
             self.game_over()
         
         if (head[0] < 0 or head[0] >= GRID_WIDTH or
-            head[1] < 0 or head[1] >= GRID_HEIGHT): 
+            head[1] < 0 or head[1] >= GRID_HEIGHT):
             self.game_over()
 
     def game_over(self):
         self.delete(tk.ALL)
         self.create_text(self.winfo_width()/2, self.winfo_height()/2,
-                         text=f"Game Over! Score: {self.score}", fill="red")
-        self.after_cancel(self.after_id) 
+                         text=f"Game Over! Length: {self.snake_length}", fill="red")
+        self.after_cancel(self.after_id)
         
     def move_snake(self):
         head_x, head_y = self.snake_positions[0]
@@ -71,6 +72,9 @@ class Snake(tk.Canvas):
             new_head = (head_x, head_y - 1)
             
         self.snake_positions.insert(0, new_head)
+        
+        if len(self.snake_positions) > self.snake_length:
+            self.snake_positions.pop()
 
     def on_key_press(self, e):
         new_direction = e.keysym
@@ -89,5 +93,5 @@ class Snake(tk.Canvas):
         
 gui = Snake()
 gui.pack()
-gui.after_id = gui.after(100, gui.game_loop)
+gui.after_id = gui.after(100, gui.game_loop) 
 gui.mainloop()
