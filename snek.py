@@ -15,7 +15,7 @@ class Snake(tk.Canvas):
         while True:
             x = random.randint(0, GRID_WIDTH - 1)
             y = random.randint(0, GRID_HEIGHT - 1)
-        food = (x, y)
+            food = (x, y)
         if food not in self.snake_positions:
             return food
         
