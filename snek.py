@@ -13,6 +13,7 @@ class Snake(tk.Canvas):
         self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)] 
 
         
+        
         self.direction = 'Right'
 
         self.create_objects()
