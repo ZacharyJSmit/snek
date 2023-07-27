@@ -2,7 +2,7 @@ import tkinter as tk
 import random
 
 GRID_SIZE = 20
-GRID_WIDTH = 30
+GRID_WIDTH = 30  
 GRID_HEIGHT = 30
 
 class Snake(tk.Canvas):
@@ -46,7 +46,8 @@ class Snake(tk.Canvas):
     def check_collisions(self):
         head = self.snake_positions[0]
         
-        if head in self.snake_positions[1:]:
+        body = self.snake_positions[1:]
+        if head in body:
             self.game_over()
         
         if (head[0] < 0 or head[0] >= GRID_WIDTH or
