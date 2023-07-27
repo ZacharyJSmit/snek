@@ -1,4 +1,4 @@
-import tkinter as tk 
+import tkinter as tk
 import random
 
 GRID_SIZE = 20
@@ -28,7 +28,7 @@ class Snake(tk.Canvas):
             y = random.randint(0, GRID_HEIGHT - 1)
             if (x, y) not in self.snake_positions:
                 return (x, y)
-                
+
     def create_objects(self):
         self.delete(tk.ALL)
         
@@ -36,7 +36,7 @@ class Snake(tk.Canvas):
             self.create_rectangle(x*GRID_SIZE, y*GRID_SIZE,
                                   (x+1)*GRID_SIZE, (y+1)*GRID_SIZE, 
                                   fill='green')
-                                  
+
         self.create_oval(self.food_position[0]*GRID_SIZE, 
                          self.food_position[1]*GRID_SIZE,
                          (self.food_position[0]+1)*GRID_SIZE,
@@ -75,6 +75,11 @@ class Snake(tk.Canvas):
         
         if len(self.snake_positions) > self.snake_length:
             self.snake_positions.pop()
+            
+        if self.snake_positions[0] == self.food_position:
+            self.snake_length += 1
+            self.food_position = self.generate_food()
+            self.score += 1
 
     def on_key_press(self, e):
         new_direction = e.keysym
@@ -93,5 +98,5 @@ class Snake(tk.Canvas):
         
 gui = Snake()
 gui.pack()
-gui.after_id = gui.after(100, gui.game_loop) 
+gui.after_id = gui.after(100, gui.game_loop)
 gui.mainloop()
