@@ -2,7 +2,7 @@ import tkinter as tk
 import random
 
 GRID_SIZE = 20
-GRID_WIDTH = 30 
+GRID_WIDTH = 30
 GRID_HEIGHT = 30
 
 class Snake(tk.Canvas):
@@ -13,9 +13,13 @@ class Snake(tk.Canvas):
         self.snake_positions = [(14, 7), (15, 7)]
         self.food_position = self.set_new_food_position()
         self.direction = 'Right'
+        self.score = 0
 
         self.create_objects()
         self.bind_all('<Key>', self.on_key_press)
+
+        self.pack()
+        self.after_id = self.after(100, self.game_loop)
 
     def set_new_food_position(self):
         while True:
@@ -34,7 +38,7 @@ class Snake(tk.Canvas):
                                   
         self.create_oval(self.food_position[0]*GRID_SIZE, 
                          self.food_position[1]*GRID_SIZE,
-                         (self.food_position[0]+1)*GRID_SIZE, 
+                         (self.food_position[0]+1)*GRID_SIZE,
                          (self.food_position[1]+1)*GRID_SIZE,
                          fill='red')
                          
@@ -44,15 +48,15 @@ class Snake(tk.Canvas):
         if head in self.snake_positions[1:]:
             self.game_over()
         
-        if (head[0] < 0 or head[0] >= GRID_WIDTH or 
-            head[1] < 0 or head[1] >= GRID_HEIGHT):
+        if (head[0] < 0 or head[0] >= GRID_WIDTH or
+            head[1] < 0 or head[1] >= GRID_HEIGHT): 
             self.game_over()
 
     def game_over(self):
         self.delete(tk.ALL)
-        self.create_text(self.winfo_width()/2, self.winfo_height()/2, 
-                         text="Game Over!", fill="red")
-        self.after_cancel(self.after_id)
+        self.create_text(self.winfo_width()/2, self.winfo_height()/2,
+                         text=f"Game Over! Score: {self.score}", fill="red")
+        self.after_cancel(self.after_id) 
         
     def move_snake(self):
         head_x, head_y = self.snake_positions[0]
