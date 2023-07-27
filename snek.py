@@ -60,3 +60,9 @@ class Snake(tk.Canvas):
 
 gui = Snake()
 gui.game_loop()
+
+# Create the Snake GUI instance 
+snake = Snake() 
+
+# Enter the Tkinter event loop 
+snake.mainloop()
