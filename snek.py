@@ -12,7 +12,7 @@ class Snake(tk.Canvas):
         super().__init__(width=GRID_WIDTH*GRID_SIZE, height=GRID_HEIGHT*GRID_SIZE)
         self.snake_positions = [(GRID_WIDTH//2, GRID_HEIGHT//2)] 
     def set_new_food_position(self):
-    while True:
+        while True:
         x = random.randint(0, GRID_WIDTH - 1)
         y = random.randint(0, GRID_HEIGHT - 1)
         food = (x, y)
